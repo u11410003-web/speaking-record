@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>演講紀錄與心得｜爆炸地震學：近地表爆炸事件之 PGV 衰減關係研究</title>
+  <style>
+    :root {
+      --bg-body: #f4f6f9;
+      --bg-card: #ffffff;
+      --bg-subtle: #f8fafc;
+      --primary: #0f2942;
+      --primary-light: #1e4068;
+      --accent: #d97706;
+      --accent-soft: #fef3c7;
+      --danger: #dc2626;
+      --success: #059669;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+      --radius: 12px;
+      --font-sans: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header & Seismic Wave Banner */
+    header.hero {
+      background: linear-gradient(135deg, #0b1e33 0%, #16375b 65%, #1f4b7a 100%);
+      color: #ffffff;
+      padding: 2.5rem 1.5rem 2.25rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .hero-wave {
+      position: absolute;
+      right: -20px;
+      bottom: -10px;
+      width: 520px;
+      height: 140px;
+      opacity: 0.14;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      color: #f8fafc;
+      letter-spacing: 0.02em;
+    }
+
+    .badge.accent {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    header.hero h1 {
+      font-size: clamp(1.55rem, 3vw, 2.25rem);
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 0.45rem;
+      letter-spacing: 0.01em;
+    }
+
+    header.hero .subtitle {
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: #cbd5e1;
+      font-weight: 400;
+      margin-bottom: 1.15rem;
+    }
+
+    .meta-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      padding-top: 0.95rem;
+    }
+
+    .meta-item strong {
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    /* Sticky Navigation Bar */
+    nav.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: #eef2f6;
+      padding: 0.3rem;
+      border-radius: 10px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(15, 41, 66, 0.25);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+      max-width: 340px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      background: var(--bg-subtle);
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    /* Main Workspace Layout */
+    main.workspace {
+      max-width: 1280px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    main.workspace.split-mode {
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      main.workspace.split-mode {
+        grid-template-columns: 1fr;
+      }
+      .hide-on-mobile {
+        display: none !important;
+      }
+    }
+
+    .panel-hidden {
+      display: none !important;
+    }
+
+    /* Section Headers & Cards */
+    .section-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-banner h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Chapter Filter Pills */
+    .chapter-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .chap-pill {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+
+    .chap-pill:hover {
+      border-color: var(--primary-light);
+      background: #f1f5f9;
+    }
+
+    .chap-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Lecture Chapter Cards */
+    .lecture-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .lecture-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .chap-num {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.15rem 0.6rem;
+      border-radius: 6px;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-header h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .slide-tag {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      font-family: var(--font-mono);
+    }
+
+    .quote-btn {
+      margin-top: 0.4rem;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.15s;
+    }
+
+    .quote-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .lecture-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 1rem 0 0.45rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .lecture-card h4::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 15px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .lecture-card ul {
+      padding-left: 1.35rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .lecture-card li {
+      margin-bottom: 0.45rem;
+      color: #334155;
+    }
+
+    .lecture-card li strong {
+      color: #0f172a;
+    }
+
+    .formula-box {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: var(--font-mono);
+      padding: 0.9rem 1.15rem;
+      border-radius: 8px;
+      margin: 0.85rem 0;
+      font-size: 0.95rem;
+      overflow-x: auto;
+      border-left: 4px solid var(--accent);
+    }
+
+    .formula-box .sub-note {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin-top: 0.35rem;
+    }
+
+    .callout {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      margin: 0.85rem 0;
+      font-size: 0.92rem;
+      color: #78350f;
+    }
+
+    .callout.info {
+      background: #f0f9ff;
+      border-color: #bae6fd;
+      border-left-color: #0284c7;
+      color: #0c4a6e;
+    }
+
+    /* Data Table */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 0.85rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: center;
+    }
+
+    table.data-table th {
+      background: #f1f5f9;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 0.6rem 0.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    table.data-table td {
+      padding: 0.55rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    table.data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    .tag-highlight {
+      display: inline-block;
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .tag-red {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .tag-green {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    /* Interactive PGV Calculator Widget */
+    .calc-widget {
+      background: linear-gradient(to bottom right, #f8fafc, #eff6ff);
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 1.1rem;
+      margin-top: 1rem;
+    }
+
+    .calc-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .calc-field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .calc-field input {
+      width: 100%;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+    }
+
+    .calc-result {
+      background: #ffffff;
+      border: 1px solid #dbeafe;
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .calc-result strong {
+      font-family: var(--font-mono);
+      color: var(--danger);
+      font-size: 1.05rem;
+    }
+
+    /* Reflection Studio (撰寫心得) */
+    .reflection-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .split-mode .reflection-panel {
+      position: sticky;
+      top: 4.5rem;
+      max-height: calc(100vh - 5.5rem);
+      overflow-y: auto;
+    }
+
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 0.85rem;
+      margin-bottom: 1.1rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .save-indicator {
+      color: var(--success);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-group label span.hint {
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--text-main);
+      background: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 41, 66, 0.1);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 95px;
+    }
+
+    textarea.form-control.tall {
+      min-height: 165px;
+    }
+
+    .prompt-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .chip-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      font-size: 0.78rem;
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .chip-btn:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: #78350f;
+    }
+
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.05rem;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-accent:hover {
+      background: #b45309;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: #f1f5f9;
+    }
+
+    .btn-danger {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger);
+      margin-left: auto;
+    }
+
+    .btn-danger:hover {
+      background: #fee2e2;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 0.75rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(15px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Print Styles for Exporting Clean PDF Report */
+    @media print {
+      nav.topbar, .chapter-nav, .quote-btn, .prompt-chips, .action-bar, .calc-widget, .toast {
+        display: none !important;
+      }
+      body {
+        background: #ffffff;
+      }
+      header.hero {
+        background: #0f2942 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 1.5rem;
+      }
+      main.workspace {
+        display: block;
+        margin: 0;
+        padding: 1rem 0;
+      }
+      .panel-hidden {
+        display: block !important;
+      }
+      .reflection-panel {
+        position: static !important;
+        max-height: none !important;
+        box-shadow: none;
+        border: 1px solid #cbd5e1;
+        page-break-before: always;
+      }
+      .lecture-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頁首：演講基本資訊 -->
+  <header class="hero">
+    <svg class="hero-wave" viewBox="0 0 600 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 75 H120 L135 55 L145 95 L158 20 L172 135 L186 10 L200 140 L215 35 L230 115 L245 50 L260 100 L275 62 L290 88 L310 70 L330 80 H600" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="hero-inner">
+      <div class="badge-row">
+        <span class="badge accent">地球科學專題演講紀錄</span>
+        <span class="badge">Explosion &amp; Forensic Seismology</span>
+        <span class="badge">共 41 頁簡報完整彙整</span>
+      </div>
+      <h1>爆炸地震學：近地表爆炸事件之地面最大速度 (PGV) 衰減關係研究</h1>
+      <p class="subtitle">從北韓核試爆監測、TAIGER 炸測實驗到 2014 高雄氣爆規模推估</p>
+      <div class="meta-grid">
+        <div class="meta-item"><strong>主講人：</strong>梁文宗 博士（中央研究院地球科學研究所）</div>
+        <div class="meta-item"><strong>時間地點：</strong>2026-11-18 @ 臺北市立大學 (UTaipei)</div>
+        <div class="meta-item"><strong>核心方法：</strong>Pg/Lg 頻譜比、表面波頻散、高頻高斯濾波、PGV 衰減反演</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 導覽切換列 -->
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <div class="mode-tabs" role="tablist">
+        <button class="tab-btn active" id="tab-all" onclick="switchView('split')">📑 雙欄對照（紀錄＋心得）</button>
+        <button class="tab-btn" id="tab-lecture" onclick="switchView('lecture')">📖 紀錄演講內容</button>
+        <button class="tab-btn" id="tab-reflection" onclick="switchView('reflection')">✍️ 撰寫演講心得</button>
+      </div>
+      <div class="search-box" id="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 搜尋演講關鍵字（如：高雄氣爆、TAIGER、Lg波...）" oninput="filterLecture()" />
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主工作區 -->
+  <main class="workspace split-mode" id="workspace">
+
+    <!-- 左欄／第一部分：紀錄演講內容 -->
+    <section id="lecture-section">
+      <div class="section-banner">
+        <h2>📖 演講內容完整紀錄</h2>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">依演講六大綱要結構整理（Slides 1–41）</span>
+      </div>
+
+      <!-- 章節快速篩選 -->
+      <div class="chapter-nav" id="chapterNav">
+        <button class="chap-pill active" data-chap="all" onclick="filterChapter('all', this)">全部章節 (6)</button>
+        <button class="chap-pill" data-chap="1" onclick="filterChapter('1', this)">一、爆炸/法醫地震學</button>
+        <button class="chap-pill" data-chap="2" onclick="filterChapter('2', this)">二、北韓核試爆觀測</button>
+        <button class="chap-pill" data-chap="3" onclick="filterChapter('3', this)">三、TAIGER 炸測實驗</button>
+        <button class="chap-pill" data-chap="4" onclick="filterChapter('4', this)">四、PGV 衰減關係建立</button>
+        <button class="chap-pill" data-chap="5" onclick="filterChapter('5', this)">五、高雄氣爆應用實例</button>
+        <button class="chap-pill" data-chap="6" onclick="filterChapter('6', this)">六、研究結論與展望</button>
+      </div>
+
+      <!-- 第一章 -->
+      <article class="lecture-card" data-chapter="1">
+        <div class="card-header">
+          <div>
+            <span class="chap-num">Chapter 01</span>
+            <h3>什麼是爆炸／法醫地震學？(Explosion / Forensic Seismology)</h3>
+          </div>
+          <div style="text-align: right;">
+            <span class="slide-tag">Slides 3–8</span><br />
+            <button class="quote-btn" onclick="quoteToReflection('【第一章：爆炸與法醫地震學】\n法醫地震學在無目擊證人的情況下，透過分析地震波形與次聲波訊號重建意外事件原貌（如 2000 年俄羅斯庫斯克號潛艇爆炸、2017 年南韓浦項地熱誘發地震）。\n')">＋ 引用至心得</button>
+          </div>
+        </div>
+        <p><strong>核心定義：</strong>在沒有目擊證人的情況下，運用地震學原理分析地震波形與聲波訊號來抽絲剝繭，重建引起地動訊號的意外或人為事件原貌。</p>
+        
+        <h4>震源訊號類型與經典法醫地震學實例</h4>
+        <ul>
+          <li><strong>多元震源訊號：</strong>除了天然地震斷層外，火山活動、大氣爆炸、礦場爆破、礦坑坍陷、機器噪訊、意外事故與地下核子試爆皆會產生地震波（Seismic waves）與次聲波（Infrasound waves），並由地震儀、水聲感測器或衛星記錄。</li>
+          <li><strong>1998 年肯亞美國大使館恐怖攻擊：</strong>透過地震記錄分析炸彈當量與爆炸時序。</li>
+          <li><strong>2000 年北海俄羅斯 Kursk 核潛艇魚雷室爆炸：</strong>地震波形清晰記錄到兩次連續爆炸事件（首次小型魚雷爆炸與後續大型彈藥庫殉爆），釐清海難真相。</li>
+          <li><strong>2000 年美國新墨西哥州瓦斯輸送管線爆炸案：</strong>利用周邊測站定位爆炸點與發生時刻。</li>
+          <li><strong>2017 年南韓浦項（Pohang）地熱發電廠誘發 $M_w 5.4$ 地震：</strong>精確震源定位與斷層面分析證實深井注水開發與地震活動之關聯。</li>
+        </ul>
+
+        <h4>核試爆監測（CTBTO）與天然地震之鑑別方法</h4>
+        <ul>
+          <li><strong>全面核試爆禁止條約組織（CTBTO）：</strong>全球歷史核試爆次數以美國（1,054 次）與蘇聯（715 次）最多，其次為法國（210）、英國（45）、中國（45）、印度（6）、巴基斯坦（6）與北韓（6 次，為 21 世紀唯一仍進行核試的國家）。</li>
+          <li><strong>鑑別指標 (A) 體波規模 vs. 表面波規模 ($m_b$ vs. $M_s$)：</strong>由於爆炸屬於點源膨脹、激發表面波效率較低，在相同 $m_b$ 下，核試爆的 $M_s$ 明顯小於天然地震（位於經驗篩選線 $M_s = 1.25m_b - 2.2$ 下方）。</li>
+          <li><strong>鑑別指標 (B) 區域 P/S 振幅比（$Pg/Lg$）：</strong>天然地震剪力錯動強，S 波（$Lg$）振幅大；爆炸以體積膨脹為主，高頻 P 波（$Pg$）能量遠大於 S 波。</li>
+          <li><strong>鑑別指標 (C) 震源機制逆推（Moment Tensor Inversion）：</strong>以 2017/09/03 北韓核試爆（$m_b 6.3, M_w 5.2$）為例，長週期波形與初動極性逆推顯示其等向性膨脹分量（ISO）高達 <strong>42%</strong>（雙力偶 DC 僅 34%、CLVD 24%），在 Hudson 震源類型圖上顯著偏離天然地震線。</li>
+        </ul>
+      </article>
+
+      <!-- 第二章 -->
+      <article class="lecture-card" data-chapter="2">
+        <div class="card-header">
+          <div>
+            <span class="chap-num">Chapter 02</span>
+            <h3>北韓核試爆的地震觀測（2006–2017）</h3>
+          </div>
+          <div style="text-align: right;">
+            <span class="slide-tag">Slides 9–22</span><br />
+            <button class="quote-btn" onclick="quoteToReflection('【第二章：北韓核試爆地震觀測】\n距離豐溪里核試場 370 公里的牡丹江（MDJ）測站完整記錄了 2006 至 2017 年六次核試爆；此外，20 秒週期雷利波在 900–1100 公里處出現明顯振幅離散，揭示日本海下方地體構造不均質性造成的波能聚焦與散焦效應。\n')">＋ 引用至心得</button>
+          </div>
+        </div>
+
+        <h4>豐溪里（Punggye-ri）六次核試爆與牡丹江（MDJ）測站記錄</h4>
+        <ul>
+          <li>距離核試場約 $370\text{ km}$ 的中國牡丹江測站（IC.MDJ）完整記錄到北韓歷次試爆的 $Pn$、$Pg$、$Lg$ 與表面雷利波（Rayleigh wave），規模隨時間顯著攀升：
+            <strong>2006/10/09 ($m_b 4.3$)</strong> → <strong>2009/05/25 ($m_b 4.7$)</strong> → <strong>2013/02/12 ($m_b 5.1$)</strong> → <strong>2016/01/06 ($m_b 5.1$)</strong> → <strong>2016/09/09 ($m_b 5.3$)</strong> → <strong>2017/09/03 ($m_b 6.3$)</strong>。
+          </li>
+          <li><strong>$Lg$ 波物理特性：</strong>$Lg$ 波是在地殼波導（Crustal waveguide）中多次反射的剪力波，平均地殼剪力波速約 $3.5\text{ km/s}$，常見於震央距 $120\text{--}2000\text{ km}$ 的區域地震波中（美國視速度約 $3.0\text{--}3.6\text{ km/s}$、日本約 $2.8\text{--}3.5\text{ km/s}$、中國約 $3.0\text{--}3.6\text{ km/s}$）。</li>
+        </ul>
+
+        <h4>Pg vs. Lg 頻譜比法與噪訊限制</h4>
+        <ul>
+          <li><strong>計算流程：</strong>選取 $Pg$ 波（約 $25\text{ s}$ 時間窗）與 $Lg$ 波視速度時間窗，將 $Lg$ 時間窗切分為多個 <strong>50% 重疊</strong>的小時間窗分別進行傅立葉轉換，再疊加平均求得平滑頻譜（參考 Taylor, 1996；Kim et al., 2007）。</li>
+          <li><strong>高頻鑑別力與距離噪訊效應：</strong>在 $2\text{--}3\text{ Hz}$ 以上頻段，爆炸事件的 $\log(Pg/Lg)$ 頻譜比明顯高於天然地震；然而當觀測距離拉遠（如從 $463\text{ km}$ 的 KS.SEO2 到 $3019\text{ km}$ 的 IC.KMI），高頻訊號快速衰減並落入背景噪訊中，使有效分析頻寬大幅縮減。</li>
+        </ul>
+
+        <h4>表面雷利波（$T = 20\text{ s}$）振幅衰減與地體構造效應</h4>
+        <ul>
+          <li>針對 2017/09/03 核試爆波形進行中心週期 $T_c = 20\text{ s}$（$f = 0.05\text{ Hz}$）高斯濾波與封包曲線分析，測得平均群速 $U \approx 3.35\text{ km/s}$。</li>
+          <li>在震央距 <strong>$900\text{--}1100\text{ km}$</strong> 區間，不同方位測站（如日本 F-net 與台灣 BATS 等）的表面波振幅呈現顯著離散。結合 Furumura et al. (2014) 與 Witek et al. (2014) 的速度構造研究，證實<strong>日本海（東海）下方地殼厚度與速度構造不均質</strong>：波速較高的異常區會使表面波能量<strong>散焦（Defocusing）</strong>，波速較低的異常區則會造成能量<strong>聚焦（Focusing）</strong>。</li>
+        </ul>
+      </article>
+
+      <!-- 第三章 -->
+      <article class="lecture-card" data-chapter="3">
+        <div class="card-header">
+          <div>
+            <span class="chap-num">Chapter 03</span>
+            <h3>台灣大地動力學國際合作研究計畫（TAIGER 炸測實驗）</h3>
+          </div>
+          <div style="text-align: right;">
+            <span class="slide-tag">Slides 23–31</span><br />
+            <button class="quote-btn" onclick="quoteToReflection('【第三章：TAIGER 炸測實驗】\nTAIGER 計畫於台灣南北實施 10 次人工炸測（炸藥量 500–3000 kg），發現即使施放相同炸藥量（如 750 kg），因炸點地質與耦合條件不同，產生的地震規模（ML 1.55–2.62）仍有顯著差異。\n')">＋ 引用至心得</button>
+          </div>
+        </div>
+
+        <p><strong>計畫背景（2006–2009）：</strong>TAIGER（TAiwan Integrated GEodynamic Research）透過 2009 年 R/V Marcus Langseth 研究船空氣槍海陸聯測，以及 2008 年陸地炸測（T6、T5、T4b 測線，佈設高密度 Geophone + Texan rt125 記錄器），在北台灣（N1–N4）與南台灣（S1–S4）共執行 <strong>10 次人工炸測實驗</strong>。</p>
+
+        <h4>資料前處理與主頻高斯濾波</h4>
+        <ul>
+          <li><strong>去除儀器響應：</strong>依據卷積關係式 $z(\omega) = s(\omega) * E(\omega) * a(\omega) * I(\omega) = u(\omega) * I(\omega)$，扣除儀器響應 $I(\omega)$，將原始數位計數（count）還原為真實地面振動速度 $u(t)$（單位：$\text{m/s}$）。</li>
+          <li><strong>訊噪比（SNR）檢驗與濾波：</strong>以 P 波到時前為噪訊窗、到時後為訊號窗進行品質篩選；經時頻分析確認炸測能量集中於高頻段後，以主頻 $f_0 = 5\text{ Hz}$ 進行窄頻高斯濾波並計算封包曲線（Envelope），萃取出真實訊號峰值（PGV）。</li>
+        </ul>
+
+        <h4>TAIGER 十次炸測實驗爆破參數一覽表</h4>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>南台灣炸點</th>
+                <th>炸藥量 (kg)</th>
+                <th>氣象署規模 ($M_L$)</th>
+                <th>北台灣炸點</th>
+                <th>炸藥量 (kg)</th>
+                <th>氣象署規模 ($M_L$)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>S1</strong></td>
+                <td>1,000</td>
+                <td>3.02</td>
+                <td><strong>N1</strong></td>
+                <td>750</td>
+                <td>2.56</td>
+              </tr>
+              <tr>
+                <td><strong>S2</strong></td>
+                <td>750</td>
+                <td><strong>2.62</strong></td>
+                <td><strong>N2</strong></td>
+                <td>750</td>
+                <td><strong>1.55</strong></td>
+              </tr>
+              <tr>
+                <td><strong>S3</strong></td>
+                <td><span class="tag-highlight tag-green">500 (最小)</span></td>
+                <td>1.89</td>
+                <td><strong>N3</strong></td>
+                <td>750</td>
+                <td>2.10</td>
+              </tr>
+              <tr>
+                <td><strong>S3P</strong></td>
+                <td>1,500</td>
+                <td>1.78</td>
+                <td><strong>N3P</strong></td>
+                <td><span class="tag-highlight tag-red">3,000 (最大)</span></td>
+                <td>2.67</td>
+              </tr>
+              <tr>
+                <td><strong>S4</strong></td>
+                <td>750</td>
+                <td>2.30</td>
+                <td><strong>N4</strong></td>
+                <td>1,000</td>
+                <td>2.43</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <strong>關鍵發現（Bath, 1979 能量轉換理論）：</strong>爆炸能量絕大部分轉化為光、熱、聲波及圍岩破碎，僅極小比例轉為地震波。從上表可見，同為 <strong>$750\text{ kg}$</strong> 炸藥（如 S2 與 N2），產生的規模卻從 $M_L 1.55$ 橫跨至 $M_L 2.62$，證實<strong>爆炸深度（鑽井覆蓋角礫石程度）、周遭岩性（花崗岩與岩鹽耦合效能高）與介質緊實度</strong>對震波轉換效率具有決定性影響。
+        </div>
+      </article>
+
+      <!-- 第四章 -->
+      <article class="lecture-card" data-chapter="4">
+        <div class="card-header">
+          <div>
+            <span class="chap-num">Chapter 04</span>
+            <h3>近地表爆炸事件 $PGV$ 衰減關係式的建立</h3>
+          </div>
+          <div style="text-align: right;">
+            <span class="slide-tag">Slides 32–38</span><br />
+            <button class="quote-btn" onclick="quoteToReflection('【第四章：PGV 衰減關係式建立】\n研究團隊利用北台灣岩盤測站資料，建立了首個適用於近地表爆炸的 5 Hz PGV 衰減公式：log(PGV) = -1.41 log(X) + 1.16 ML - 6.63；同時也發現西部平原厚層沉積物會產生「多重潛水波（Multiple Diving Waves）」，使近距離振幅呈現異常高值。\n')">＋ 引用至心得</button>
+          </div>
+        </div>
+
+        <h4>南北測線衰減差異與「多重潛水波（Multiple Diving Waves）」</h4>
+        <ul>
+          <li><strong>北測線（N1–N4）岩盤測站：</strong>在 $5\text{ Hz}$ 主頻下，觀測到的地面最大速度（$PGV$）隨震央距 $X$ 在雙對數座標上呈現極佳的線性衰減趨勢。</li>
+          <li><strong>南測線（S1–S4）平原異常現象：</strong>南測線在短距離（$< 20\text{ km}$）內出現明顯的「高振幅高原區」，不隨距離快速遞減。</li>
+          <li><strong>成因解析（Huang et al., 2013）：</strong>南測線西段位於西部平原厚層第四紀沉積物，淺層具有<strong>極陡峭的波速梯度</strong>。射線追蹤模擬證實，爆炸震波在淺層沉積盆地中不斷折射並多次返回地表，形成連續疊加的<strong>多重潛水波（$P, M_1, M_2, \dots, M_6$）</strong>，大幅放大近距離地表震動（此現象亦見於氣象署強震站 CHY031 記錄之極淺層地震，呈現明顯的 $P, PP, PPP$ 與 $S, SS, SSS$ 震相）。</li>
+        </ul>
+
+        <h4>近地表爆炸事件 $PGV_h$ 衰減經驗公式反演</h4>
+        <p>剔除受厚層沉積盆地放大影響的平原測站後，研究團隊利用岩盤測站資料（主頻 $5\text{ Hz}$），採用經典衰減模型形式進行迴歸反演：</p>
+        <div class="formula-box">
+          log<sub>10</sub>(PGV<sub>h</sub>) = a · log<sub>10</sub>(X) + b · X + c · M<sub>L</sub> + d<br/>
+          反演結果：a = -1.41 , &nbsp; c = 1.16 , &nbsp; d = -6.63 &nbsp;（短距離下非彈性衰減項 bX 可忽略）
+          <span class="sub-note">註：PGV 單位為 m/s，X 為震央距（km），M<sub>L</sub> 為區域規模；模型殘差呈集中於 0 的標準常態分布。</span>
+        </div>
+
+        <!-- 互動小工具：PGV 衰減公式計算機 -->
+        <div class="calc-widget">
+          <div class="calc-title">
+            <span>🧮 互動體驗：近地表爆炸 $5\text{ Hz}$ PGV 衰減公式模擬器</span>
+            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 500;">依據 Slide 37 反演參數</span>
+          </div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label for="calcDist">震央距 X (km)</label>
+              <input type="number" id="calcDist" value="10" min="0.1" max="300" step="0.5" oninput="updatePgvCalc()" />
+            </div>
+            <div class="calc-field">
+              <label for="calcMl">區域規模 M<sub>L</sub></label>
+              <input type="number" id="calcMl" value="2.38" min="0.5" max="6.0" step="0.01" oninput="updatePgvCalc()" />
+            </div>
+          </div>
+          <div class="calc-result" id="calcOutput">
+            <span>預測地面最大速度 PGV：</span>
+            <strong>2.16 × 10<sup>-6</sup> m/s (0.000216 cm/s)</strong>
+          </div>
+        </div>
+      </article>
+
+      <!-- 第五章 -->
+      <article class="lecture-card" data-chapter="5">
+        <div class="card-header">
+          <div>
+            <span class="chap-num">Chapter 05</span>
+            <h3>衰減關係式的實際應用：2014 高雄氣爆事件</h3>
+          </div>
+          <div style="text-align: right;">
+            <span class="slide-tag">Slides 39–40</span><br />
+            <button class="quote-btn" onclick="quoteToReflection('【第五章：高雄氣爆事件規模推估】\n將本研究建立的近地表爆炸 PGV 衰減關係式應用於 2014 年 7 月 31 日高雄氣爆事件，利用周邊地震測站觀測資料成功反推出該起氣爆的等效區域規模為 ML = 2.38。\n')">＋ 引用至心得</button>
+          </div>
+        </div>
+        <ul>
+          <li><strong>事件背景：</strong>2014 年 7 月 31 日深夜，高雄市發生嚴重地下丙烯管線氣爆事故，造成沿線道路嚴重塌陷與重大傷亡，且周邊地震測站（如 KAU、SNJ、SGL、MASB、SGS、EASB、SLIU、TWGB 等）皆清晰記錄到爆炸產生的地動波形。</li>
+          <li><strong>規模推估困難與突破：</strong>由於氣爆發生於極淺層地表，傳統針對深部斷層錯動建立的地震規模公式容易產生偏差。研究團隊量測各測站在 $5\text{ Hz}$ 頻段的真實 $PGV$ 值，並套入本研究建立的<strong>近地表爆炸衰減關係式</strong>。</li>
+          <li><strong>研究成果：</strong>觀測數據與模型預測曲線高度吻合，成功反推出 2014 年高雄氣爆事件的等效區域規模為 <strong>$M_L = 2.38$</strong>，展現法醫地震學在重大公共安全事故鑑識上的實用價值。</li>
+        </ul>
+      </article>
+
+      <!-- 第六章 -->
+      <article class="lecture-card" data-chapter="6">
+        <div class="card-header">
+          <div>
+            <span class="chap-num">Chapter 06</span>
+            <h3>結論與未來研究方向</h3>
+          </div>
+          <div style="text-align: right;">
+            <span class="slide-tag">Slide 41</span><br />
+            <button class="quote-btn" onclick="quoteToReflection('【第六章：演講總結】\n本演講完整串聯遠距核試爆監測與本土近地表炸測研究，不僅建立台灣首個岩盤近地表爆炸 PGV 衰減式並成功評估高雄氣爆規模，也點出「平原地區近地表爆炸衰減方程式」是未來亟需補齊的重要課題。\n')">＋ 引用至心得</button>
+          </div>
+        </div>
+        <ul>
+          <li><strong>日本海構造不均質性：</strong>2017 年北韓核試驗產生之雷利波在相近距離（$900\text{--}1100\text{ km}$）下的振幅衰減呈現明顯空間差異，可歸因於日本海下方地下構造的不均質性（波速異常造成聚焦／散焦）。</li>
+          <li><strong>首個近地表爆炸 PGV 衰減式：</strong>利用 TAIGER 計畫岩盤測站的地震波形資料，成功建立了首個適用於台灣近地表爆炸事件之最大地動速度（$PGV$）衰減方程式。</li>
+          <li><strong>平原與岩盤衰減型態差異：</strong>西部平原地區（厚層沉積物、多重潛水波效應）所觀測到的 $PGV$ 衰減特性，與岩盤測站所呈現的衰減型態有顯著差異。</li>
+          <li><strong>爆破耦合效率差異：</strong>炸藥使用量與觀測所得之區域規模（$M_L$）關係顯示各次爆破的爆炸效率並不相同，推測與當地地質條件、耦合效果及實際引爆炸藥量有關。</li>
+          <li><strong>高雄氣爆規模定量評估：</strong>透過所建立的衰減公式，成功推估出 2014 年高雄氣爆事件所對應之等效區域規模（$M_L = 2.38$）。</li>
+          <li><strong>未來展望：</strong>發生於<strong>平原地區</strong>之近地表爆炸事件的 $PGV$ 衰減方程式，仍有待進一步建立與修正。</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- 右欄／第二部分：撰寫心得工作區 -->
+    <aside class="reflection-panel" id="reflection-section">
+      <div class="section-banner">
+        <h2>✍️ 撰寫演講心得</h2>
+        <span style="font-size: 0.82rem; color: var(--text-muted);">支援即時自動存檔與匯出報告</span>
+      </div>
+
+      <!-- 狀態與字數統計列 -->
+      <div class="status-bar">
+        <span class="save-indicator" id="saveStatus">● 已自動儲存於本機瀏覽器</span>
+        <span>總字數：<strong id="wordCount" style="color: var(--primary);">0</strong> 字</span>
+      </div>
+
+      <!-- 基本資料欄位 -->
+      <div class="form-row-2">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="authorName">撰寫人姓名／學號</label>
+          <input type="text" id="authorName" class="form-control" placeholder="例如：王小明（U1120001）" oninput="autoSaveReflection()" />
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="courseName">課程／活動名稱</label>
+          <input type="text" id="courseName" class="form-control" placeholder="例如：地球科學專題討論" oninput="autoSaveReflection()" />
+        </div>
+      </div>
+
+      <!-- 快捷寫作靈感標籤 -->
+      <div style="margin: 0.9rem 0 0.35rem; font-size: 0.82rem; font-weight: 700; color: var(--text-muted);">
+        💡 點擊插入寫作引導句：
+      </div>
+      <div class="prompt-chips">
+        <button class="chip-btn" onclick="insertPrompt('本次梁文宗博士主講的《爆炸地震學》，讓我深刻體會到地震波不僅能研究天然斷層，更能作為「法醫鑑識」的科學工具……')">＋ 開頭破題</button>
+        <button class="chip-btn" onclick="insertPrompt('在北韓核試爆監測部分，最令我印象深刻的是 Pg/Lg 頻譜比法與 20 秒雷利波在 900–1100 公里處因日本海地下構造不均質而產生的聚焦／散焦現象……')">＋ 核試爆監測啟發</button>
+        <button class="chip-btn" onclick="insertPrompt('TAIGER 炸測實驗揭示了一個反直覺卻極具物理意義的現象：相同 750 公斤炸藥在不同地質與耦合條件下竟會產生 ML 1.55 到 2.62 的巨大落差……')">＋ TAIGER 實驗洞察</button>
+        <button class="chip-btn" onclick="insertPrompt('將學術推導出的近地表 PGV 衰減公式實際應用於 2014 年高雄氣爆事件，並推估出 ML = 2.38 的等效規模，展現了地球科學回應社會重大災害的價值……')">＋ 高雄氣爆應用反思</button>
+      </div>
+
+      <!-- 引導式分段心得 -->
+      <div class="form-group">
+        <label for="refSummary">
+          一、演講核心重點摘要
+          <span class="hint">簡述講者解決了什麼科學問題</span>
+        </label>
+        <textarea id="refSummary" class="form-control" placeholder="請整理您對本次演講研究脈絡與核心方法的理解..." oninput="autoSaveReflection()"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="refHighlight">
+          二、印象最深刻的案例或物理機制
+          <span class="hint">如：多重潛水波、耦合效應、高雄氣爆推估</span>
+        </label>
+        <textarea id="refHighlight" class="form-control" placeholder="哪一張圖表、實驗數據或應用案例最吸引您？為什麼？" oninput="autoSaveReflection()"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="refInsight">
+          三、個人深度心得、跨領域連結與提問
+          <span class="hint">可點擊左側卡片的「＋ 引用至心得」快速帶入資料</span>
+        </label>
+        <textarea id="refInsight" class="form-control tall" placeholder="寫下您的學習收穫、對未來平原地區衰減公式建立的想法，或延伸疑問..." oninput="autoSaveReflection()"></textarea>
+      </div>
+
+      <!-- 匯出與操作按鈕 -->
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="copyFullReflection()">📋 複製完整心得</button>
+        <button class="btn btn-accent" onclick="downloadMarkdown()">⬇️ 匯出 Markdown (.md)</button>
+        <button class="btn btn-outline" onclick="window.print()">🖨️ 列印 / 另存 PDF</button>
+        <button class="btn btn-danger" onclick="clearReflection()">🗑️ 清空重寫</button>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- 提示訊息框 -->
+  <div class="toast" id="toast">已複製到剪貼簿！</div>
+
+  <script>
+    const STORAGE_KEY = 'utaipei_explosion_seismology_notes_v1';
+
+    // 1. 檢視模式切換（雙欄 / 僅看演講紀錄 / 僅寫心得）
+    function switchView(mode) {
+      const workspace = document.getElementById('workspace');
+      const lectureSec = document.getElementById('lecture-section');
+      const reflectionSec = document.getElementById('reflection-section');
+      const searchBox = document.getElementById('search-container');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      if (mode === 'split') {
+        document.getElementById('tab-all').classList.add('active');
+        workspace.classList.add('split-mode');
+        lectureSec.classList.remove('panel-hidden');
+        reflectionSec.classList.remove('panel-hidden');
+        searchBox.style.display = 'flex';
+      } else if (mode === 'lecture') {
+        document.getElementById('tab-lecture').classList.add('active');
+        workspace.classList.remove('split-mode');
+        lectureSec.classList.remove('panel-hidden');
+        reflectionSec.classList.add('panel-hidden');
+        searchBox.style.display = 'flex';
+      } else if (mode === 'reflection') {
+        document.getElementById('tab-reflection').classList.add('active');
+        workspace.classList.remove('split-mode');
+        lectureSec.classList.add('panel-hidden');
+        reflectionSec.classList.remove('panel-hidden');
+        searchBox.style.display = 'none';
+      }
+    }
+
+    // 2. 章節篩選
+    let currentChapter = 'all';
+    function filterChapter(chap, btnEl) {
+      currentChapter = chap;
+      document.querySelectorAll('.chap-pill').forEach(p => p.classList.remove('active'));
+      btnEl.classList.add('active');
+      applyLectureFilters();
+    }
+
+    // 3. 關鍵字搜尋過濾
+    function filterLecture() {
+      applyLectureFilters();
+    }
+
+    function applyLectureFilters() {
+      const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+      const cards = document.querySelectorAll('.lecture-card');
+
+      cards.forEach(card => {
+        const cardChap = card.getAttribute('data-chapter');
+        const text = card.innerText.toLowerCase();
+        const matchChap = (currentChapter === 'all' || cardChap === currentChapter);
+        const matchKey = (!keyword || text.includes(keyword));
+
+        if (matchChap && matchKey) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 4. 互動計算器：log10(PGV) = -1.41 * log10(X) + 1.16 * ML - 6.63
+    function updatePgvCalc() {
+      const x = parseFloat(document.getElementById('calcDist').value);
+      const ml = parseFloat(document.getElementById('calcMl').value);
+      const outEl = document.getElementById('calcOutput');
+
+      if (isNaN(x) || x <= 0 || isNaN(ml)) {
+        outEl.innerHTML = '<span>請輸入有效的正數距離與規模數值</span>';
+        return;
+      }
+
+      const logPgv = -1.41 * Math.log10(x) + 1.16 * ml - 6.63;
+      const pgvMs = Math.pow(10, logPgv);
+      const pgvCms = pgvMs * 100;
+
+      outEl.innerHTML = `
+        <span>預測 5 Hz 地表最大速度 (PGV)：</span>
+        <strong>${pgvMs.toExponential(2)} m/s (${pgvCms.toExponential(2)} cm/s)</strong>
+      `;
+    }
+
+    // 5. 引用演講重點至心得欄位
+    function quoteToReflection(quoteText) {
+      const insightBox = document.getElementById('refInsight');
+      const currentVal = insightBox.value;
+      insightBox.value = currentVal ? currentVal + '\n' + quoteText : quoteText;
+      autoSaveReflection();
+      showToast('已將該章節重點引用至右側心得區！');
+      insightBox.focus();
+    }
+
+    // 6. 插入寫作引導句
+    function insertPrompt(promptText) {
+      const summaryBox = document.getElementById('refSummary');
+      const insightBox = document.getElementById('refInsight');
+      const target = summaryBox.value.trim().length < 20 ? summaryBox : insightBox;
+      target.value = target.value ? target.value + '\n' + promptText : promptText;
+      autoSaveReflection();
+      showToast('已插入寫作引導句');
+      target.focus();
+    }
+
+    // 7. 自動儲存與字數計算
+    function autoSaveReflection() {
+      const data = {
+        authorName: document.getElementById('authorName').value,
+        courseName: document.getElementById('courseName').value,
+        refSummary: document.getElementById('refSummary').value,
+        refHighlight: document.getElementById('refHighlight').value,
+        refInsight: document.getElementById('refInsight').value,
+        updatedAt: new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      document.getElementById('saveStatus').textContent = `● 已自動儲存（${data.updatedAt}）`;
+      updateWordCount();
+    }
+
+    function updateWordCount() {
+      const combined = [
+        document.getElementById('refSummary').value,
+        document.getElementById('refHighlight').value,
+        document.getElementById('refInsight').value
+      ].join('').replace(/\s+/g, '');
+      document.getElementById('wordCount').textContent = combined.length;
+    }
+
+    function loadSavedReflection() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const data = JSON.parse(raw);
+        if (data.authorName) document.getElementById('authorName').value = data.authorName;
+        if (data.courseName) document.getElementById('courseName').value = data.courseName;
+        if (data.refSummary) document.getElementById('refSummary').value = data.refSummary;
+        if (data.refHighlight) document.getElementById('refHighlight').value = data.refHighlight;
+        if (data.refInsight) document.getElementById('refInsight').value = data.refInsight;
+        if (data.updatedAt) {
+          document.getElementById('saveStatus').textContent = `● 已載入上次草稿（${data.updatedAt}）`;
+        }
+        updateWordCount();
+      } catch (e) {
+        console.error('載入草稿失敗', e);
+      }
+    }
+
+    // 8. 組合完整心得純文字 / Markdown
+    function buildReportText() {
+      const author = document.getElementById('authorName').value.trim() || '未填寫';
+      const course = document.getElementById('courseName').value.trim() || '地球科學專題演講';
+      const summary = document.getElementById('refSummary').value.trim() || '（尚未填寫）';
+      const highlight = document.getElementById('refHighlight').value.trim() || '（尚未填寫）';
+      const insight = document.getElementById('refInsight').value.trim() || '（尚未填寫）';
+
+      return [
+        `# 演講心得報告：《爆炸地震學：近地表爆炸事件之地面最大速度 (PGV) 衰減關係研究》`,
+        ``,
+        `- **主講人**：梁文宗 博士（中央研究院地球科學研究所）`,
+        `- **演講時間與地點**：2026-11-18 @ 臺北市立大學 (UTaipei)`,
+        `- **課程／活動**：${course}`,
+        `- **撰寫人**：${author}`,
+        ``,
+        `---`,
+        ``,
+        `## 一、演講核心重點摘要`,
+        summary,
+        ``,
+        `## 二、印象最深刻的案例或物理機制`,
+        highlight,
+        ``,
+        `## 三、個人深度心得、跨領域連結與提問`,
+        insight
+      ].join('\n');
+    }
+
+    function copyFullReflection() {
+      const text = buildReportText();
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('✅ 完整演講心得已複製到剪貼簿！');
+      }).catch(() => {
+        showToast('⚠️ 複製失敗，請手動選取文字複製');
+      });
+    }
+
+    function downloadMarkdown() {
+      const text = buildReportText();
+      const blob = new Blob([text], { type: 'text/markdown;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const author = document.getElementById('authorName').value.trim() || '演講心得';
+      a.href = url;
+      a.download = `爆炸地震學演講心得_${author}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('⬇️ 已匯出 Markdown 心得檔案！');
+    }
+
+    function clearReflection() {
+      if (!confirm('確定要清空目前填寫的所有心得內容嗎？此動作無法復原。')) return;
+      ['refSummary', 'refHighlight', 'refInsight'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      autoSaveReflection();
+      showToast('🗑️ 已清空心得內容');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    // 初始化
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedReflection();
+      updatePgvCalc();
+    });
+  </script>
+</body>
+</html>
